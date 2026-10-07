@@ -128,7 +128,11 @@ async function findLunchPlaces({ query, open_now = false }, env) {
   }
 
   const data = await res.json();
-  return { places: formatPlaces(data.places ?? [], centre) };
+  // locationBias only prefers nearby places, so drop anything out of range.
+  const places = formatPlaces(data.places ?? [], centre).filter(
+    (p) => p.distance_m <= SEARCH_RADIUS_METRES,
+  );
+  return { places };
 }
 
 /**
