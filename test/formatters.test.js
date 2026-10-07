@@ -1,10 +1,38 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  CT_HUB_2,
   formatForecast,
   formatBusArrivals,
+  formatPlaces,
   haversineMetres,
 } from "../src/tools.js";
+
+test("formatPlaces reports whether each place is open now", () => {
+  const places = [
+    {
+      displayName: { text: "Open Stall" },
+      rating: 4.2,
+      location: CT_HUB_2,
+      currentOpeningHours: { openNow: true },
+    },
+    {
+      displayName: { text: "Closed Stall" },
+      location: CT_HUB_2,
+      currentOpeningHours: { openNow: false },
+    },
+    { displayName: { text: "No Hours" }, location: CT_HUB_2 },
+  ];
+
+  assert.deepEqual(
+    formatPlaces(places, CT_HUB_2).map((p) => [p.name, p.open_now]),
+    [
+      ["Open Stall", true],
+      ["Closed Stall", false],
+      ["No Hours", null],
+    ],
+  );
+});
 
 test("formatForecast picks the requested area", () => {
   const payload = {
