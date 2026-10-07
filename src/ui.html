@@ -75,10 +75,14 @@
           body: JSON.stringify({ history, message }),
         });
         const data = await res.json();
-        const reply = data.reply ?? data.error ?? "No reply.";
-        thinking.textContent = reply;
-        history.push({ role: "user", content: message });
-        history.push({ role: "assistant", content: reply });
+        if (res.ok && typeof data.reply === "string") {
+          thinking.textContent = data.reply;
+          // Only real replies go into history, so errors never reach the model.
+          history.push({ role: "user", content: message });
+          history.push({ role: "assistant", content: data.reply });
+        } else {
+          thinking.textContent = data.error ?? "No reply.";
+        }
       } catch (err) {
         thinking.textContent = "Cannot reach Uncle. Try again.";
       } finally {
