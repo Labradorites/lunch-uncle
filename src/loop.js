@@ -1,9 +1,9 @@
 import { buildSystemPrompt } from "./prompt.js";
 import { toolDefinitions, executeTool } from "./tools.js";
 
-// OpenCode Go, OpenAI-compatible. glm-5.3-flash is fast and handles tool calls well.
+// OpenCode Go, OpenAI-compatible. deepseek-v4-flash is fast and handles tool calls well.
 const LLM_BASE_URL = "https://opencode.ai/zen/go/v1";
-const LLM_MODEL = "glm-5.3-flash";
+const LLM_MODEL = "deepseek-v4-flash";
 
 const LLM_TIMEOUT_MS = 20_000;
 const MAX_ROUNDS = 8;
